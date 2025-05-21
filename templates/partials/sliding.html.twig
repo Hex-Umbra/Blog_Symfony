@@ -1,0 +1,68 @@
+{% if pageCount > 1 %}
+    <nav class="flex justify-center mt-6">
+        <ul class="join">
+
+            {# ← Précédent #}
+            {% if previous is defined %}
+                <li>
+                    <a class="join-item btn btn-sm btn-outline" rel="prev" href="{{ path(route, query|merge({(pageParameterName): previous})) }}">
+                        « {{ 'label_previous'|trans({}, 'KnpPaginatorBundle') }}
+                    </a>
+                </li>
+            {% else %}
+                <li>
+                    <span class="join-item btn btn-sm btn-disabled">« {{ 'label_previous'|trans({}, 'KnpPaginatorBundle') }}</span>
+                </li>
+            {% endif %}
+
+            {# … Si pages avant le début visible #}
+            {% if startPage > 1 %}
+                <li><a class="join-item btn btn-sm btn-outline" href="{{ path(route, query|merge({(pageParameterName): 1})) }}">1</a></li>
+
+                {% if startPage == 3 %}
+                    <li><a class="join-item btn btn-sm btn-outline" href="{{ path(route, query|merge({(pageParameterName): 2})) }}">2</a></li>
+                {% elseif startPage != 2 %}
+                    <li><span class="join-item btn btn-sm btn-disabled">…</span></li>
+                {% endif %}
+            {% endif %}
+
+            {# Pages visibles #}
+            {% for page in pagesInRange %}
+                {% if page != current %}
+                    <li>
+                        <a class="join-item btn btn-sm btn-outline" href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <span class="join-item btn btn-sm btn-active">{{ page }}</span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {# Pages après la fin visible #}
+            {% if pageCount > endPage %}
+                {% if pageCount > (endPage + 1) %}
+                    {% if pageCount > (endPage + 2) %}
+                        <li><span class="join-item btn btn-sm btn-disabled">…</span></li>
+                    {% else %}
+                        <li><a class="join-item btn btn-sm btn-outline" href="{{ path(route, query|merge({(pageParameterName): (pageCount - 1)})) }}">{{ pageCount -1 }}</a></li>
+                    {% endif %}
+                {% endif %}
+                <li><a class="join-item btn btn-sm btn-outline" href="{{ path(route, query|merge({(pageParameterName): pageCount})) }}">{{ pageCount }}</a></li>
+            {% endif %}
+
+            {# → Suivant #}
+            {% if next is defined %}
+                <li>
+                    <a class="join-item btn btn-sm btn-outline" rel="next" href="{{ path(route, query|merge({(pageParameterName): next})) }}">
+                        {{ 'label_next'|trans({}, 'KnpPaginatorBundle') }} »
+                    </a>
+                </li>
+            {% else %}
+                <li>
+                    <span class="join-item btn btn-sm btn-disabled">{{ 'label_next'|trans({}, 'KnpPaginatorBundle') }} »</span>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}

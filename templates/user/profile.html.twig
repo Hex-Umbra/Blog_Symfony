@@ -1,0 +1,30 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<h1 class="text-3xl font-bold underline">User Profile</h1>
+<div>
+    {% for article in articles %}
+    <div>
+        <h2>{{article.title}}</h2>
+        <h3>{{article.content}} </h3>
+        <ul>
+            <li><a href="{{path("app.articles.action", {id: article.id})}}" class="btn btn-warning">Edit</a></li>
+            <li><button class="btn btn-error" onclick="delete_modal.showModal()">Delete</button></li>
+            <dialog id="delete_modal" class="modal">
+                <div class="modal-box">
+                    <h3>Deleting an article !</h3>
+                    <p>Are you Sure you want to delete the article: <strong class="text-red-600">{{article.title}}</strong>
+                    </p>
+                    <div class="modal-action">
+                    <label for="modal-{{ article.id }}" class="btn">Annuler</label>
+
+                    <a href="{{ path('app.articles.delete', {id: article.id}) }}" class="btn btn-error">
+                        Oui, supprimer
+                    </a>
+                </div>
+            </dialog>
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+{% endblock body %}

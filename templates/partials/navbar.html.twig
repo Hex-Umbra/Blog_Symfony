@@ -1,0 +1,74 @@
+<div class="navbar bg-black shadow-sm w-full">
+
+    {# Dropdown Menu for Mobile #}
+    <div class="navbar-start">
+        <div class="dropdown">
+            <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"
+                        color="gray" />
+                </svg>
+            </div>
+            <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                <li><a href="{{path('app.articles')}}"
+                        class="text-gray-400 btn btn-ghost btn-accent hover:text-black">Articles</a>
+                </li>
+                <li> <a href="{{path('app.about')}}"
+                        class="text-gray-400 btn btn-ghost btn-accent hover:text-black">About</a>
+                </li>
+                {% if app.user %}
+                <li><a href="{{path('app.articles.action')}}">Write New Article</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        {# App Logo & Name #}
+        <a class="text-xl text-gray-400 transition-transform duration-200 hover:scale-110 ml-5 hover:bg-[#00d3bb] rounded py-1 px-2 hover:text-black"
+            href="{{path('app.home')}}">Neo Blog</a>
+        {% if app.user %}
+        <span class="text-gray-400 mr-4">Hello, {{ app.user.email }}</span>
+        {% endif %}
+
+        {# Navigation Links for Desktop #}
+    </div>
+    <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal px-2 gap-4">
+            <li class="t{% if app.request.get("_route") != "app.articles" %} transition-transform duration-300 hover:scale-110 {% endif %}">
+
+                <a href="{{path('app.articles')}}"
+                    class='{% if app.request.get("_route") == "app.articles" %} btn btn-accent text-black btn-lg{% else %} btn btn-ghost btn-accent text-gray-400 hover:text-black{% endif %}'>Articles</a>
+            </li>
+            
+            <li class="{% if app.request.get("_route") != "app.about" %} transition-transform duration-300 hover:scale-110 {% endif %}">
+
+                <a href="{{path('app.about')}}" 
+                    class='{% if app.request.get("_route") == "app.about" %}btn btn-accent text-black btn-lg{% else %} btn btn-ghost btn-accent text-gray-400 hover:text-black{% endif %}'>About</a>
+            </li>
+
+        </ul>
+    </div>
+    {# Links for Authentication #}
+    <div class="navbar-end hidden lg:flex">
+        {# If User is Connected #}
+        {% if app.user %}
+        <a href="{{path('app.articles.action')}}"
+            class="text-black-400 btn btn-soft btn-primary hover:text-white-400">Write New Article</a>
+        <a href="{{path('app.profile', {id: app.user.id})}}"
+            class="text-gray-400 btn btn-ghost btn-info hover:text-black">Profile</a>
+        <a href="{{path('app.logout')}}" class="text-gray-400 btn btn-ghost btn-error hover:text-black">Logout</a>
+
+        {# If User is Not Connected #}
+        {% else %}
+        <ul class="menu menu-horizontal px-2 gap-4">
+            <li class="transition-transform duration-200 hover:scale-110">
+                <a href="{{path('app.login')}}"
+                    class="{% if app.request.get("_route") == "app.login" %}btn btn-accent text-black btn-lg{% else %} btn btn-ghost btn-accent text-gray-400 hover:text-black{% endif %}">Login</a>
+            </li>
+            <li class="transition-transform duration-200 hover:scale-110 ">
+                <a href="{{path('app.register')}}"
+                    class="{% if app.request.get("_route") == "app.register" %}btn btn-accent text-black btn-lg{% else %} btn btn-ghost btn-accent text-gray-400 hover:text-black{% endif %}">Registration</a>
+            </li>
+        </ul>
+        {% endif %}
+    </div>
+</div>

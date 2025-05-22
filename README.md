@@ -40,8 +40,9 @@
        7. [ ] - Eventually add a Pagination with 10 articles max per page (using Doctrine and the query Builder)
        8. [ ] - 
     2. [ ] - For `User`
-      1.  [ ] - For `User Registration` use a mailer system to confirm the email
-      2.  [ ] - Make a `User Profile`
+      1.  [x] - For `User Registration` use a mailer system to confirm the email
+      2.  [x] - For `User Login` with the mailer system make a a forgot password system
+      3.  [ ] - Make a `User Profile`
           1.  [x] - Display all written articles
               1.  [ ] - Change the style to make it appealing
           2.  [ ] - Display all written comments and their related articles

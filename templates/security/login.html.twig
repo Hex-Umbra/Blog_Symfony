@@ -14,7 +14,7 @@
     </div>
     {% endif %}
 
-    <div class="relative flex flex-col items-center h-screen overflow-hidden">
+    <div class="relative flex flex-col items-center h-screen overflow-hidden text-black">
         <div class="w-full p-6 bg-white border-t-4 border-gray-600 rounded-md shadow-md border-top lg:max-w-lg">
             <h1 class="text-3xl font-semibold text-center text-gray-700">Please sign in</h1>
 
@@ -23,14 +23,17 @@
                 class="w-full input input-bordered mb-3" autocomplete="email" required autofocus>
 
             <label for="password" class="text-gray-500 mb-2 block font-semibold">Password</label>
-            <input type="password" name="_password" id="password" class="w-full input input-bordered mb-3" autocomplete="current-password"
-                required>
+            <input type="password" name="_password" id="password" class="w-full input input-bordered mb-3"
+                autocomplete="current-password" required>
 
             <input type="hidden" name="_csrf_token" data-controller="csrf-protection"
                 value="{{ csrf_token('authenticate') }}">
-                <button class="btn btn-lg btn-primary" type="submit">
-                    Sign in
-                </button>
+            <button class="btn btn-lg btn-primary" type="submit">
+                Sign in
+            </button>
+            <div class="mt-6">
+                <a href="{{path('app.forgot_password')}}" class="text-black">Forgot password</a>
+            </div>
         </div>
     </div>
 

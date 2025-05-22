@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello EmailConfirmationController!{% endblock %}
+
+{% block body %}
+    <h1>Email confirmation</h1>
+    <p>Congratulations! You can now connect to our application with your email</p>
+    <a href="{{path("app.login")}}" class="btn btn-success">Go to Login</a>
+{% endblock %}

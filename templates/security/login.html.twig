@@ -14,8 +14,22 @@
     </div>
     {% endif %}
 
-    <div class="relative flex flex-col items-center h-screen overflow-hidden text-black">
-        <div class="w-full p-6 bg-white border-t-4 border-gray-600 rounded-md shadow-md border-top lg:max-w-lg">
+    <div class="relative flex flex-col items-center justify-center overflow-hidden text-black h-[calc(100vh-140px)]">
+        {# Flash Messages #}
+        <div>
+            {% for type,messages in app.flashes %}
+            {% for message in messages %}
+            <div class="bg-{{type}} text-white text-center my-5 py-2 px-3 rounded w-full">
+                {{message}}
+                <button class="btn btn-warning btn-circle asbolute top-2 right-2 ml-5"
+                    onclick="this.parentElement.style.display='none'">X</button>
+            </div>
+
+            {% endfor %}
+            {% endfor %}
+        </div>
+        <div class="w-full p-6 bg-white border-t-4 border-gray-600 rounded-md shadow-md border-top lg:max-w-lg ">
+
             <h1 class="text-3xl font-semibold text-center text-gray-700">Please sign in</h1>
 
             <label for="username" class="text-gray-500 mb-2 block font-semibold">Email</label>

@@ -42,7 +42,13 @@
     2. [ ] - For `User`
       1.  [x] - For `User Registration` use a mailer system to confirm the email
       2.  [x] - For `User Login` with the mailer system make a a forgot password system
-      3.  [ ] - Make a `User Profile`
+      3.  [ ] - Add Flash Message for `Registration`
+      4.  [ ] - Add Flash Message for `Email Validation`
+      5.  [ ] - Add Flash Message for `Email Password Reset`
+      6.  [ ] - Add Flash Message for `Successful Password Reset`
+      7.  [ ] - Add Flash Message for `Login`
+      8.  [ ] - Add Flash Message for `Logout`
+      9.  [ ] - Make a `User Profile`
           1.  [x] - Display all written articles
               1.  [ ] - Change the style to make it appealing
           2.  [ ] - Display all written comments and their related articles
@@ -68,5 +74,4 @@
 
 
 ## Future Fixes
-1. [ ] - Fix the Registration, After registration, log-in the user
-2. [ ] - 
+1. [ ] - Fix The Delete Modal for `Article`.

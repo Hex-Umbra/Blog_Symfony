@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Articles index{% endblock %}
+
+{% block body %}
+<div class="flex w-full justify-center flex-col">
+
+    <h1 class="text-3xl text-center mt-5">Articles index</h1>
+    <a href="{{ path('app_admin_articles_new') }}" class="btn btn-soft btn-primary my-5 w-40">Create new</a>
+
+</div>
+
+<table class="table w-full border border-gray-300 text-black">
+    <thead>
+        <tr class="bg-gray-200">
+            <th class="p-3 text-left font-medium text-gray-700">Id</th>
+            <th class="p-3 text-left font-medium text-gray-700">Title</th>
+            <th class="p-3 text-left font-medium text-gray-700">Content</th>
+            <th class="p-3 text-left font-medium text-gray-700">Image</th>
+            <th class="p-3 text-left font-medium text-gray-700">CreatedAt</th>
+            <th class="p-3 text-left font-medium text-gray-700">UpdatedAt</th>
+            <th class="p-3 text-left font-medium text-gray-700">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for article in articles %}
+        <tr class="odd:bg-gray-100 even:bg-white">
+            <td class="p-3">{{ article.id }}</td>
+            <td class="p-3">{{ article.title }}</td>
+            <td class="p-3">{{ article.content }}</td>
+            <td class="p-3">{{ article.image }}</td>
+            <td class="p-3">{{ article.createdAt ? article.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            <td class="p-3">{{ article.updatedAt ? article.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            <td class="p-3 flex gap-2">
+                <a href="{{ path('app_admin_articles_show', {'id': article.id}) }}" class="btn btn-sm btn-info">Show</a>
+                <a href="{{ path('app_admin_articles_edit', {'id': article.id}) }}"
+                    class="btn btn-sm btn-warning">Edit</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="7" class="p-3 text-center">No records found</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

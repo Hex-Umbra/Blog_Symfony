@@ -49,7 +49,11 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: "/forgot-password", name: "app.forgot_password")]
-    public function forgotPassword(UserRepository $repo, EntityManagerInterface $em, Request $req, EmailService $emailService): Response
+    public function forgotPassword(
+        UserRepository $repo, 
+        EntityManagerInterface $em, 
+        Request $req, 
+        EmailService $emailService): Response
     {
         // Creation of the form
         $form = $this->createForm(ForgotPasswordForm::class);
@@ -64,8 +68,9 @@ class SecurityController extends AbstractController
 
             // If The email is not valid then user does not exist
             if (!$user) {
-                throw $this->createNotFoundException("This user does not exist");
-            }
+            $this->addFlash("error", "The Email you're trying to use is invalid");
+            return $this->redirectToRoute("app.login");
+        }
 
             // Generation of the token for reset
             $token = Uuid::v4()->toRfc4122();
@@ -92,6 +97,9 @@ class SecurityController extends AbstractController
                 $body
             );
 
+            $this->addFlash("success", "An email for reset password has been sent to your email");
+            return $this->redirectToRoute("app.login");
+
         }
 
         return $this->render(
@@ -110,9 +118,11 @@ class SecurityController extends AbstractController
         $token,
         UserPasswordHasherInterface $passwordHasher
     ): Response {
+        // Checking if User exists, if not throw exception
         $user = $repo->findOneBy(["token" => $token]);
         if (!$user) {
-            throw $this->createNotFoundException("This User does not exist");
+            $this->addFlash("error", "The Token you're trying to use is invalid");
+            return $this->redirectToRoute("app.login");
         }
 
         // Form Creation for Password Reset
@@ -130,6 +140,7 @@ class SecurityController extends AbstractController
 
             $em->flush();
 
+            $this->addFlash("success", "Your password was successfully reset");
             return $this->redirectToRoute("app.login");
 
         }
@@ -144,7 +155,7 @@ class SecurityController extends AbstractController
 
     #[IsGranted("ROLE_USER")]
     #[Route(path: "/{id}/profile", name: "app.profile")]
-    public function profile(int $id, ArticlesRepository $articlesRepo): Response
+    public function profile(ArticlesRepository $articlesRepo): Response
     {
         $user = $this->getUser();
         $writtenArticles = $articlesRepo->findBy(["user" => $user]);

@@ -4,15 +4,42 @@
 <head>
   <meta charset="UTF-8" />
   <title>{% block title %}Welcome!{% endblock %}</title>
-  <link rel="icon"
-    href="{{ asset('images/logo.png') }}" alt="Neo Blog Logo" class="rounded-full"/>
+  <link rel="icon" href="{{ asset('images/logo.png') }}" alt="Neo Blog Logo" class="rounded-full" />
 
+  {# Google Font Links #}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+    rel="stylesheet">
+
+  {# Tailwind & DaisyUI CDN Links #}
   <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  {# Tom Select for a clean Tag Selection #}
   <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
-
   <!-- Tom Select JS -->
   <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+
+  <style>
+    .lato-thin {
+      font-family: "Lato", sans-serif;
+      font-weight: 100;
+      font-style: normal;
+    }
+
+    .lato-light {
+      font-family: "Lato", sans-serif;
+      font-weight: 300;
+      font-style: normal;
+    }
+
+    .lato-regular {
+      font-family: "Lato", sans-serif;
+      font-weight: 400;
+      font-style: normal;
+    }
+  </style>
 
   {% include "partials/navbar.html.twig" %}
 </head>

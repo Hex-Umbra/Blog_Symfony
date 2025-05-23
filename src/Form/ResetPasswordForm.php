@@ -14,7 +14,7 @@ class ResetPasswordForm extends AbstractType
     {
         $builder
             ->add('Password', PasswordType::class, [
-                "label" => "Saisissez votre mot de passe",
+                "label" => "Saisissez votre nouveau mot de passe",
                 "attr" => ["class" => "w-full input input-bordered mb-3"],
                 'label_attr' => [
                     'class' => 'text-gray-500 mb-2 block font-semibold',

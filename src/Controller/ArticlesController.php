@@ -6,8 +6,8 @@ use App\Entity\Articles;
 use App\Form\ArticleTypeForm;
 use App\Repository\ArticlesRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use ErrorException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -44,7 +44,7 @@ final class ArticlesController extends AbstractController
     public function delete(Articles $article, EntityManagerInterface $em): Response
     {
         if ($this->getUser() !== $article->getUser()) {
-            throw new ErrorException("You are not allowed to delete this article");
+            throw new AccessDeniedException("You are not allowed to delete this article");
         }
 
         $em->remove($article);
@@ -62,7 +62,7 @@ final class ArticlesController extends AbstractController
 
 
         if ($article && $this->getUser() !== $article->getUser()) {
-            throw new ErrorException("You are not allowed to modify this article");
+            throw new AccessDeniedException("You are not allowed to modify this article");
         }
 
         // If no Article Object is returned from the Database, then its a new Article
@@ -72,13 +72,13 @@ final class ArticlesController extends AbstractController
             $article = new Articles();
             $article->setUser($this->getUser());
         }
+        // If the Article Object is returned from the Database, then its an existing Article
         // Form for both Edit and New Methods
         $form = $this->createForm(ArticleTypeForm::class, $article);
         $form->handleRequest($req);
 
         // Form Submission Handler
         if ($form->isSubmitted() && $form->isValid()) {
-            $article = $form->getData();
 
             // Image Upload handler, we give it a new unique name, then save it in the uploads file and the path to it in the database
             $image = $form->get("imageFile")->getData();

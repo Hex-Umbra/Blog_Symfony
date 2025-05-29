@@ -71,6 +71,10 @@
       2. [ ] - A section about the most liked/viewed articles (6 max)
 16. [ ] - For `Login` & `Registration`, add redirection links to each other
 17. [ ] - After adding email Confirmation, Add the `Forgot Password` feature
+18. [ ] - Handle `Page Errors` Templates
+    1.  [x] - 404
+    2.  [ ] - 403
+    3.  [ ] - 500
 
 
 ## Future Fixes

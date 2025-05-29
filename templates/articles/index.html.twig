@@ -4,7 +4,7 @@
 
 {% block body %}
 <style>
-  .join{
+  .join {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,11 +21,13 @@
 
 
 
-<div class="flex justify-center align-items-center flex-wrap w-full lg:h-full my-2 gap-3 text-black">
+<div class="flex justify-center align-items-center flex-wrap w-full lg:h-auto my-2 gap-3 text-black">
   {% for article in articles %}
-  <a href="{{path("app.articles.show", {id:article.id})}}"
-    class="card bg-base-100 w-96 shadow-sm mx-3 my-2 justify-center">
+  <div onclick="window.location.href='{{ path('app.articles.show', {id: article.id}) }}'"
+    class="card bg-base-100 w-96 shadow-sm mx-3 my-2 justify-center cursor-pointer hover:shadow-lg transition">
+
     <figure class="w-full h-60 ">
+
       {% if article.image %}
       <img src="/uploads/{{article.image}}" alt="Shoes" class="object-cover" />
       {% else %}
@@ -37,9 +39,11 @@
       <h2 class="card-title">
         {{article.title}}
       </h2>
-      <p>{{article.content | split(".") | first}}.</p>
+      <div class="truncate-content text-sm text-gray-600 h-full">
+        {{ article.content | raw }}
+      </div>
     </div>
-  </a>
+  </div>
   {% endfor %}
 </div>
 <div class="join">

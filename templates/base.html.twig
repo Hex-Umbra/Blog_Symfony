@@ -39,6 +39,23 @@
       font-weight: 400;
       font-style: normal;
     }
+
+    .truncate-content {
+      position: relative;
+      max-height: 6rem;
+      overflow: hidden;
+    }
+
+    .truncate-content::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2rem;
+      width: 100%;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #f9fafb);
+      /* adjust end color to match your card bg */
+    }
   </style>
 
   {% include "partials/navbar.html.twig" %}
@@ -48,20 +65,10 @@
   <div class="min-h-screen">
 
     {% block body %}{% endblock %}
+
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      new TomSelect('.tom-select', {
-        create: false,
-        sortField: {
-          field: "text",
-          direction: "asc"
-        },
-        plugins: ['remove_button']
-      });
-    });
-  </script>
+
 </body>
 
 

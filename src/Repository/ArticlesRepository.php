@@ -19,16 +19,26 @@ class ArticlesRepository extends ServiceEntityRepository
     //    /**
     //     * @return Articles[] Returns an array of Articles objects
     //     */
-       public function findByUserId($value): array
-       {
-           return $this->createQueryBuilder('a')
-               ->andWhere('a.user_id = :val')
-               ->setParameter('val', $value)
-               ->orderBy('a.title', 'ASC')
-               ->getQuery()
-               ->getResult()
-           ;
-       }
+    public function findByUserId($value): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.user_id = :val')
+            ->setParameter('val', $value)
+            ->orderBy('a.title', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findLatestArticles(int $limit = 4): array
+    {
+        return $this->createQueryBuilder("a")
+            ->orderBy("a.createdAt", "DESC")
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
     //    public function findOneBySomeField($value): ?Articles
     //    {

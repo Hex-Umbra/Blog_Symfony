@@ -5,13 +5,122 @@
 {% block body %}
 
 {# Hero Section where we display the latest post #}
-<div class="hero min-h-[80vh] mb-5">
+<section class="hero min-h-[80vh] mb-5">
   <div class="hero-content text-neutral-content text-center">
     <div class="max-w-md">
-      <h1 class="mb-5 text-5xl font-bold">Welcome To <span>Neo Blog</span></h1>
-      <button class="btn btn-primary">Get Started</button>
+      <h1 class="mb-5 text-5xl font-bold">Welcome To
+        <span id="matrix-title" class="block text-[#00D3BB]">Neo Blog</span>
+      </h1>
     </div>
   </div>
+</section>
+
+<section class="md:realtive bg-teal-800 py-16 px-8 mb-20">
+  <div class="flex flex-col md:flex-row gap-8 max-w-6xl mx-auto items-stretch relative md:top-32">
+    <!-- Image Card -->
+    <div class="card w-full md:w-3/4" data-aos="fade-right" data-aos-duration="1500">
+      <figure><img src="/uploads/{{featured.image}}" alt="Featured Article Image" /></figure>
+    </div>
+
+    <!-- Text Card -->
+    <div class="card w-full md:w-1/2 bg-[#00D3BB] text-black shadow-xl" data-aos="fade-left" data-aos-duration="800">
+      <div class="card-body">
+        <div class="bg-[#5100D3] w-fit mb-2 rouded-full text-white py-2 px-6 rounded-full">Featured Article</div>
+        <h2 class="card-title">{{featured.title}}</h2>
+        <p class="text-sm">
+          {{featured.content | raw}}
+        </p>
+        <div class="card-actions justify-end">
+          <div class="badge badge-neutral badge-xl w-fit p-5">{{featured.category.name}}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="py-16"></div>
+
+<div class="text-center my-12" data-aos="fade" data-aos-duration="800">
+  <h2 class="text-3xl font-bold mb-4">Check Our <span class="text-cyan-400">Latest Articles</span> !</h2>
+  <hr class="border-gray-700 w-3/4 mx-auto mb-8">
 </div>
+
+<div x-data="{
+    activeImage: '{{ latestArticles[0].image ? '/uploads/' ~ latestArticles[0].image : '/uploads/default.png' }}',
+    activeTitle: '{{ latestArticles[0].title ?? 'Featured Article' }}',
+    
+    updateActiveImage(imageSrc, title) {
+      this.activeImage = imageSrc;
+      this.activeTitle = title;
+    }
+  }" 
+  class="flex flex-col lg:flex-row justify-center items-start gap-8 lg:gap-20 text-white"
+  role="region" 
+  aria-label="Latest Articles">
+
+  <!-- Featured Image Section -->
+  <div class="w-full lg:w-[500px] flex-shrink-0" data-aos="fade-right" data-aos-duration="800">
+    <div class="border-4 border-cyan-400 p-1 overflow-hidden rounded-lg shadow-lg">
+      <template x-if="activeImage">
+        <img :src="activeImage" 
+             :alt="activeTitle + ' - Featured Image'"
+             class="object-cover w-full h-64 transition-all duration-500 ease-in-out"
+             loading="lazy">
+      </template>
+    </div>
+    
+    <!-- Image Caption -->
+    <p class="text-center text-sm text-gray-300 mt-2 font-medium" x-text="activeTitle"></p>
+  </div>
+
+  <!-- Article List Section -->
+  <div class="w-full lg:w-80 space-y-4" data-aos="fade" data-aos-duration="1200">
+
+    {% for article in latestArticles %}
+    <article class="group">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 border-b border-gray-600 pb-4 transition-all duration-300 hover:border-cyan-400">
+        
+        <time class="text-xs font-semibold text-gray-400 uppercase tracking-wide flex-shrink-0 sm:w-20"
+              datetime="{{ article.createdAt|date('Y-m-d') }}">
+          {{ article.createdAt|date('d M y') }}
+        </time>
+
+        <a href="{{ path('app.articles.show', {id: article.id}) }}"
+           class="font-medium text-white bg-gradient-to-r from-[#00D3BB] to-[#00B8A5] py-2 px-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-gray-900 text-sm sm:text-base"
+           @mouseenter="updateActiveImage('{{ article.image ? '/uploads/' ~ article.image : '/uploads/default.png' }}', '{{ article.title|e('js') }}')"
+           @focus="updateActiveImage('{{ article.image ? '/uploads/' ~ article.image : '/uploads/default.png' }}', '{{ article.title|e('js') }}')"
+           aria-describedby="article-{{ article.id }}-date">
+          {{ article.title }}
+        </a>
+
+      </div>
+    </article>
+
+    {% else %}
+    <div class="text-center py-8">
+      <p class="text-gray-400 text-lg">No articles available yet.</p>
+      <p class="text-gray-500 text-sm mt-2">Check back later for updates!</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    new TypeIt("#matrix-title", {
+      speed: 200,
+      waitUntilVisible: true,
+      cursor: true,
+      loop: false,
+    }).go();
+  });
+</script>
+<script src="//unpkg.com/alpinejs" defer></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
 
 {% endblock %}

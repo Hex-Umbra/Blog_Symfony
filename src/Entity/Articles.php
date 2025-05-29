@@ -51,6 +51,9 @@ class Articles
     #[ORM\ManyToMany(targetEntity: Tags::class, inversedBy: 'articles')]
     private Collection $tags;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isFeatured = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -196,6 +199,18 @@ class Articles
     public function removeTag(Tags $tag): static
     {
         $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    public function isFeatured(): ?bool
+    {
+        return $this->isFeatured;
+    }
+
+    public function setIsFeatured(?bool $isFeatured): static
+    {
+        $this->isFeatured = $isFeatured;
 
         return $this;
     }

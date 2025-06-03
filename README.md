@@ -3,8 +3,8 @@
 [![Symfony](https://img.shields.io/badge/Symfony-7.0-blue?logo=symfony)](https://symfony.com/)
 [![PHP](https://img.shields.io/badge/PHP-8.2-blueviolet?logo=php)](https://www.php.net/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
-[![Last Commit](https://img.shields.io/github/last-commit/yourusername/Neoblog)](https://github.com/yourusername/Neoblog/commits/main)
-[![Repo Size](https://img.shields.io/github/repo-size/yourusername/Neoblog)](https://github.com/yourusername/Neoblog)
+[![Last Commit](https://img.shields.io/github/last-commit/Hex-Umbra/Neoblog)](https://github.com/Hex-Umbra/Neoblog/commits/main)
+[![Repo Size](https://img.shields.io/github/repo-size/Hex-Umbra/Neoblog)](https://github.com/Hex-Umbra/Neoblog)
 
 ---
 
@@ -69,7 +69,7 @@
 Access the project at http://127.0.0.1:8000
 
 ---
-## 📸 Screenshots
+
 ## 📸 Screenshots
 
 ### 🏠 Homepage
@@ -81,24 +81,28 @@ Access the project at http://127.0.0.1:8000
 
 ### 📄 Article Index Page
 
+**Working on it**
 ![Articles Index Screenshot](screenshots/articles_index.png)
 
 ---
 
 ### 📃 Article Show Page
 
+**Working on it**
 ![Article Show Screenshot](screenshots/article_show.png)
 
 ---
 
 ### 👤 User Profile
 
+**Working on it**
 ![User Profile Screenshot](screenshots/user_profile.png)
 
 ---
 
 ### 🛠️ Admin Panel
 
+**Working on it**
 ![Admin Panel Screenshot](screenshots/admin_panel.png)
 
 ---
@@ -128,7 +132,104 @@ Access the project at http://127.0.0.1:8000
     ├── composer.json
     └── symfony.lock
 ```
- ---
+
+## 📖 Documentation
+
+This section describes the internal structure and logic of **Neoblog**, including its controllers, entities, relations, and key configurations.
+
+---
+
+### 📌 Routing & Controllers
+
+Routes are primarily defined using PHP attributes in the `src/Controller/` directory.
+
+**Available Controllers:**
+- `ArticleController` → Manages article listing, details, and creation.
+- `CommentController` → Manages article comments.
+- `AboutController` → Displays static about page.
+- `EmailConfirmationController` → Handles email verification links.
+- `RegistrationController` → Manages user registration.
+- `SecurityController` → Manages user profile, login, logout, and authentication.
+
+---
+
+### 📌 Entities & Database Structure
+
+The application uses Doctrine ORM for database management, with the following main entities:
+
+- `User` (id, username, email, password, roles, articles, comments)
+- `Articles` (id, title, content, createdAt, updatedAt, category, user, tags, comments)
+- `Comments` (id, content, createdAt, article, user)
+- `Categories` (id, name, articles)
+- `Tags` (id, name, articles)
+
+---
+
+### 📌 Entity Relationships
+
+**Key Relationships:**
+- One `User` can have many `Articles` and `Comments`.
+- One `Article` belongs to one `User` and one `Category`.
+- One `Article` can have many `Comments`.
+- Many `Articles` can have many `Tags` (ManyToMany).
+- One `Category` can have many `Articles`.
+
+**Database Diagram:**
+
+<img src="screenshots/mcd_diagram.png" alt="MCD Diagram" width="700"/>
+
+*Diagram shows entities and their relationships.*
+
+---
+
+### 📌 Security & Roles
+
+Neoblog uses Symfony's Security component with role-based access:
+
+- `ROLE_USER` → Regular users with article reading and comment permissions.
+- `ROLE_ADMIN` → Admin users with additional rights for article management, category management, and user administration.
+
+Role management and access control are handled via:
+- Route annotations (`@IsGranted`) in controllers.
+- `security.yaml` configuration.
+- EasyAdmin dashboard access restricted to `ROLE_ADMIN` users.
+
+### 📌 Admin Panel with EasyAdmin
+
+Neoblog integrates the **EasyAdminBundle** for a fully functional, customizable administration panel.
+
+**Key Features:**
+- Manage `Articles`, `Categories`, `Tags`, `Comments`, and `Users` via an auto-generated, user-friendly interface.
+- Easy customization of entity fields, form layouts, filters, and list displays.
+- Access control restricted to `ROLE_ADMIN` users.
+
+**Configuration:**
+- `DashboardController` defines the admin dashboard layout.
+- CRUD controllers for each entity are configured automatically by EasyAdmin via its dashboard and menu settings.
+
+
+---
+
+### 📌 Email Confirmation
+
+The application includes an email verification system for new user registrations. Users must confirm their email address through a unique link before accessing restricted features.
+
+Managed by:
+- `EmailConfirmationController`
+- Symfony Mailer component
+- Email Templates for `New User` & `Forgotten Password`
+
+---
+
+### 📌 Commenting System
+
+Articles support user comments. Each comment is linked to:
+- The authenticated `User`
+- The `Article` it belongs to
+
+Comments are displayed in chronological order on the article show page.
+
+---
 
 ---
 

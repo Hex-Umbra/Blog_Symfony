@@ -23,7 +23,19 @@
   {# TypeIt Js CDN Link #}
   <script src="https://cdn.jsdelivr.net/npm/typeit@8.7.1/dist/index.umd.js"></script>
   {# Animation On Scroll CDN Link #}
+  <script defer src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Make sure AOS is loaded before initializing
+      if (typeof AOS !== 'undefined') {
+        AOS.init();
+      }
+    });
+  </script>
+  {# Alpine JS CDN Link #}
+  <script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+
 
   <style>
     .lato-thin {
@@ -46,27 +58,28 @@
 
     .truncate-content {
       position: relative;
-      max-height: 6rem;
+      height: 12rem;
       overflow: hidden;
     }
 
     .truncate-content::after {
-      content: "";
+      font-size: larger;
       position: absolute;
       bottom: 0;
-      left: 0;
-      height: 2rem;
+      right: 0;
       width: 100%;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #f9fafb);
-      /* adjust end color to match your card bg */
+      background: linear-gradient(to bottom, #364153, #ffffff44);
     }
   </style>
+  {% block javascripts %}
+
+  {% endblock javascripts %}
 
   {% include "partials/navbar.html.twig" %}
 </head>
 
 <body class="bg-black text-white">
-  <div class="min-h-screen">
+  <div class="min-h-screen lato-regular">
 
     {% block body %}{% endblock %}
 

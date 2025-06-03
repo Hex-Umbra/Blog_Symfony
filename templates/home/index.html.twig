@@ -2,11 +2,21 @@
 
 {% block title %}NeoBlog{% endblock %}
 
+{% block javascripts %}
+{{ parent() }}
+{% if app.request.get('_route') == 'app.home' %}
+<script src="{{ asset('js/matrix.js') }}"></script>
+{% endif %}
+{% endblock %}
+
 {% block body %}
 
+{# Canva Animation for hero section background #}
 {# Hero Section where we display the latest post #}
-<section class="hero min-h-[80vh] mb-5">
-  <div class="hero-content text-neutral-content text-center">
+<section class="hero min-h-[80vh] mb-5 relative overflow-hidden">
+  <canvas id="matrixCanvas" class="absolute top-0 left-0 w-full h-full z-0"></canvas>
+
+  <div class="hero-content text-neutral-content text-center relative z-10">
     <div class="max-w-md">
       <h1 class="mb-5 text-5xl font-bold">Welcome To
         <span id="matrix-title" class="block text-[#00D3BB]">Neo Blog</span>
@@ -25,13 +35,17 @@
     <!-- Text Card -->
     <div class="card w-full md:w-1/2 bg-[#00D3BB] text-black shadow-xl" data-aos="fade-left" data-aos-duration="800">
       <div class="card-body">
-        <div class="bg-[#5100D3] w-fit mb-2 rouded-full text-white py-2 px-6 rounded-full">Featured Article</div>
+        <div
+          class="bg-black border-4 border-[#5100D3] w-fit mb-2 rouded-full text-white text-md py-2 px-6 rounded-full">
+          Featured Article</div>
         <h2 class="card-title">{{featured.title}}</h2>
         <p class="text-sm">
           {{featured.content | raw}}
         </p>
         <div class="card-actions justify-end">
-          <div class="badge badge-neutral badge-xl w-fit p-5">{{featured.category.name}}</div>
+          <div
+            class="bg-black border-4 border-[#BB00D3] w-fit mb-2 rouded-full text-white text-xl py-2 px-6 rounded-full">
+            {{featured.category.name}}</div>
         </div>
       </div>
     </div>
@@ -54,22 +68,18 @@
       this.activeImage = imageSrc;
       this.activeTitle = title;
     }
-  }" 
-  class="flex flex-col lg:flex-row justify-center items-start gap-8 lg:gap-20 text-white"
-  role="region" 
+  }" class="flex flex-col lg:flex-row justify-center items-start gap-8 lg:gap-20 text-white" role="region"
   aria-label="Latest Articles">
 
   <!-- Featured Image Section -->
-  <div class="w-full lg:w-[500px] flex-shrink-0" data-aos="fade-right" data-aos-duration="800">
+  <div class="w-full lg:w-[500px] flex-shrink-0" data-aos="fade-left" data-aos-duration="800">
     <div class="border-4 border-cyan-400 p-1 overflow-hidden rounded-lg shadow-lg">
       <template x-if="activeImage">
-        <img :src="activeImage" 
-             :alt="activeTitle + ' - Featured Image'"
-             class="object-cover w-full h-64 transition-all duration-500 ease-in-out"
-             loading="lazy">
+        <img :src="activeImage" :alt="activeTitle + ' - Featured Image'"
+          class="object-cover w-full h-64 transition-all duration-500 ease-in-out" loading="lazy">
       </template>
     </div>
-    
+
     <!-- Image Caption -->
     <p class="text-center text-sm text-gray-300 mt-2 font-medium" x-text="activeTitle"></p>
   </div>
@@ -79,18 +89,19 @@
 
     {% for article in latestArticles %}
     <article class="group">
-      <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 border-b border-gray-600 pb-4 transition-all duration-300 hover:border-cyan-400">
-        
+      <div
+        class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 border-b border-gray-600 pb-4 transition-all duration-300 hover:border-cyan-400">
+
         <time class="text-xs font-semibold text-gray-400 uppercase tracking-wide flex-shrink-0 sm:w-20"
-              datetime="{{ article.createdAt|date('Y-m-d') }}">
+          datetime="{{ article.createdAt|date('Y-m-d') }}">
           {{ article.createdAt|date('d M y') }}
         </time>
 
         <a href="{{ path('app.articles.show', {id: article.id}) }}"
-           class="font-medium text-white bg-gradient-to-r from-[#00D3BB] to-[#00B8A5] py-2 px-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-gray-900 text-sm sm:text-base"
-           @mouseenter="updateActiveImage('{{ article.image ? '/uploads/' ~ article.image : '/uploads/default.png' }}', '{{ article.title|e('js') }}')"
-           @focus="updateActiveImage('{{ article.image ? '/uploads/' ~ article.image : '/uploads/default.png' }}', '{{ article.title|e('js') }}')"
-           aria-describedby="article-{{ article.id }}-date">
+          class="font-medium text-black bg-gradient-to-r from-[#00D3BB] to-[#00B8A5] py-2 px-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-gray-900 text-sm sm:text-base"
+          @mouseenter="updateActiveImage('{{ article.image ? '/uploads/' ~ article.image : '/uploads/default.png' }}', '{{ article.title|e('js') }}')"
+          @focus="updateActiveImage('{{ article.image ? '/uploads/' ~ article.image : '/uploads/default.png' }}', '{{ article.title|e('js') }}')"
+          aria-describedby="article-{{ article.id }}-date">
           {{ article.title }}
         </a>
 
@@ -117,10 +128,6 @@
     }).go();
   });
 </script>
-<script src="//unpkg.com/alpinejs" defer></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  AOS.init();
-</script>
+
 
 {% endblock %}

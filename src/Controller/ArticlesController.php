@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Articles;
 use App\Form\ArticleTypeForm;
 use App\Repository\ArticlesRepository;
+use App\Repository\CategoriesRepository;
+use App\Repository\TagsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
@@ -24,18 +26,52 @@ final class ArticlesController extends AbstractController
     }
 
     #[Route('/', name: '')]
-    public function index(ArticlesRepository $repo, PaginatorInterface $paginator, Request $req): Response
-    {
-        $articles = $repo->findAll();
+    public function index(
+        PaginatorInterface $paginator,
+        Request $req,
+        ArticlesRepository $repo,
+        CategoriesRepository $categoriesRepository,
+        TagsRepository $tagsRepository
+    ): Response {
+        // Fetching All categories and getting the one the user Chose 
+        $categories = $categoriesRepository->findAll();
+        $selectedCategory = $req->query->get("category");
+
+        // Getting the list of tags the user chose
+        $tags = $tagsRepository->findAll();
+        $selectedTags = $req->query->all("tags", []);
+
+        // Fetching Dynamically the articles based on the category and tags
+        $queryBuilder = $repo->createQueryBuilder("a");
+
+        // For Categories
+        if ($selectedCategory) {
+            $queryBuilder
+                ->andWhere("a.category = :category")
+                ->setParameter("category", $selectedCategory);
+        }
+        $queryBuilder->orderBy("a.createdAt", "DESC");
+        // For tags
+        if (!empty($selectedTags)) {
+            $queryBuilder
+                ->leftJoin("a.tags", "t")
+                ->andWhere("t.id IN (:tags)")
+                ->setParameter("tags", $selectedTags);
+        }
+        $queryBuilder->orderBy("a.createdAt", "DESC");
 
         $pagination = $paginator->paginate(
-            $articles,
+            $queryBuilder,
             $req->query->getInt("page", 1),
             12
         );
 
         return $this->render('articles/index.html.twig', [
             'articles' => $pagination,
+            'categories' => $categories,
+            'selectedCategory' => $selectedCategory,
+            'tags' => $tags,
+            'selectedTags' => $selectedTags,
         ]);
     }
 

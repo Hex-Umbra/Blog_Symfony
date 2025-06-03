@@ -11,42 +11,124 @@
     color: gray;
     padding: 1em;
   }
+
+  /* Hide elements with x-cloak until Alpine.js loads */
+  [x-cloak] {
+    display: none !important;
+  }
 </style>
-<div>
 
-  <h1 class="text-3xl font-bold underline text-color">
-    All Articles
-  </h1>
-</div>
+<div x-data="{ openTagModal: false }" x-cloak>
 
 
-
-<div class="flex justify-center align-items-center flex-wrap w-full lg:h-auto my-2 gap-3 text-black">
-  {% for article in articles %}
-  <div onclick="window.location.href='{{ path('app.articles.show', {id: article.id}) }}'"
-    class="card bg-base-100 w-96 shadow-sm mx-3 my-2 justify-center cursor-pointer hover:shadow-lg transition">
-
-    <figure class="w-full h-60 ">
-
-      {% if article.image %}
-      <img src="/uploads/{{article.image}}" alt="Shoes" class="object-cover" />
+  <nav class="flex items-center justify-center gap-10" data-aos="zoom-in">
+    <div
+      class="flex justify-center gap-10 text-center border-b border-gray-700 pb-2 ml-5 my-7 text-sm w-[75vw] scrollbar-hide">
+      {% if not selectedCategory and not selectedTags %}
+      <a aria-current="page" href="{{path('app.articles')}}" class="font-medium text-[#00D3BB] hover:text-[#00D3BB]">
+        All
+      </a>
       {% else %}
-      <img src="/uploads/default.png" alt="Shoes" class="object-cover" />
+      <a aria-current="page" href="{{path('app.articles')}}" class="font-medium text-white hover:text-[#00D3BB]">
+        All
+      </a>
       {% endif %}
 
-    </figure>
-    <div class="card-body">
-      <h2 class="card-title">
-        {{article.title}}
-      </h2>
-      <div class="truncate-content text-sm text-gray-600 h-full">
-        {{ article.content | raw }}
+      {% for category in categories %}
+      {% if selectedCategory == category.id %}
+      <a href="{{path('app.articles', {category: category.id})}}"
+        class="font-medium text-[#00D3BB] hover:text-[#00D3BB]">
+        {{category.name}}
+      </a>
+      {% else %}
+      <a href="{{path('app.articles', {category: category.id})}}" class="font-medium text-white hover:text-[#00D3BB]">
+        {{category.name}}
+      </a>
+      {% endif %}
+      {% endfor %}
+      <button @click="openTagModal = true" class="text-[#5100D3] hover:text-[#00D3BB] cursor-pointer underline-1">
+        Filter by tags {% if selectedTags|length > 0 %}({{ selectedTags|length }}){% endif %}
+      </button>
+    </div>
+  </nav>
+
+  <div role="list" class="flex flex-wrap justify-center gap-7 md:gap-5">
+    {% for article in articles %}
+    <article onclick="window.location.href='{{ path('app.articles.show', {id: article.id}) }}'" role="listitem"
+      class="card bg-[#d9d9d933] rounded-xl w-[20rem] flex flex-col overflow-hidden cursor-pointer hover:outline-4 hover:outline-[#00D3BB]" data-aos="fade" data-aos-duration="1000" >
+
+      {# Image of the Article Card #}
+      <figure class="w-full h-[180px] object-cover border-b-2 border-cyan-400 rounded-t-xl overflow-hidden">
+        {% if article.image %}
+        <img src="/uploads/{{article.image}}" alt="Shoes" class="object-cover" />
+        {% else %}
+        <img src="/uploads/default.png" alt="Shoes" class="object-cover" />
+        {% endif %}
+      </figure>
+      {# Article Card Body #}
+      <div class="card-body p-5 flex flex-col flex-grow">
+        {# Badge for category #}
+        <div class="flex justify-between items-center mb-2">
+          <a href="{{path('app.articles', {category: article.category.id})}}" aria-label="Category label"
+            class="bg-black text-white text-[15px] font-semibold px-3 py-1 rounded-full w-max outline-2 outline-[#00D3BB] hover:bg-[#00D3BB] hover:outline-black hover:text-black transition duration-200">
+            {{ article.category.name }}
+          </a>
+          <time class="text-xs font-semibold text-gray-400 uppercase tracking-wide flex-shrink-0 sm:w-20"
+            datetime="{{ article.createdAt|date('Y-m-d') }}">
+            {{ article.createdAt|date('d M y') }}
+          </time>
+        </div>
+        {# Article Title #}
+        <h2 class="card-title text-[20px] font-bold leading-tight mb-2.5">
+          {{article.title}}
+        </h2>
+        {# Article Content truncated #}
+        <div class="truncate-content text-[13px] text-gray-400 flex-grow">
+          {{ article.content | raw }}
+        </div>
       </div>
+      {# Article Tags #}
+      <div aria-label="Tags" class="mt-4 flex flex-wrap flext-end my-2 mx-5">
+        {% for tag in article.tags %}
+        <div class="bg-[#00D3BB] text-black border-black text-xs font-semibold px-3 py-1 rounded-full ">
+          {{ tag.name }}
+        </div>
+        {% else %}
+        <span class="text-xs text-gray-400">No tags</span>
+        {% endfor %}
+    </article>
+    {% endfor %}
+  </div>
+  <div class="join">
+    {{ knp_pagination_render(articles, "/partials/sliding.html.twig") }}
+  </div>
+  {# Modal section - can be anywhere within the x-data container #}
+  <div x-show="openTagModal" @click.self="openTagModal = false" @keydown.escape="openTagModal = false"
+    x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-300"
+    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+    class="fixed inset-0 bg-[#0000009c] flex justify-center items-center z-50">
+
+    <div class="bg-gray-600 text-white p-6 rounded-lg w-[300px]">
+      <h3 class="text-lg mb-4">Select Tags</h3>
+
+      <form method="get" action="{{ path('app.articles') }}">
+        <div class="space-y-2">
+          {% for tag in tags %}
+          <label class="flex items-center gap-2 hover:text-[#00D3BB] hover:cursor-pointer">
+            <input type="checkbox" name="tags[]" value="{{ tag.id }}" class="checkbox checkbox-md checkbox-accent" />
+            <span>{{ tag.name }}</span>
+          </label>
+          {% endfor %}
+        </div>
+
+        <div class="flex justify-end gap-2 mt-5">
+          <button type="submit" class="bg-cyan-400 text-black px-3 py-1 rounded hover:bg-cyan-300">Apply</button>
+          <button type="button" @click="openTagModal = false"
+            class="px-3 py-1 border border-white rounded hover:bg-white hover:text-black">Cancel</button>
+        </div>
+      </form>
     </div>
   </div>
-  {% endfor %}
-</div>
-<div class="join">
-  {{ knp_pagination_render(articles, "/partials/sliding.html.twig") }}
 </div>
 {% endblock %}

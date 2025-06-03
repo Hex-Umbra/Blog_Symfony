@@ -1,6 +1,16 @@
-# 📚 NeoBlog
+# 📚 Neoblog
 
-A simple blog web application built with the Symfony PHP framework, designed as a school project to practice web development fundamentals and more advanced features like authentication and authorization.
+[![Symfony](https://img.shields.io/badge/Symfony-7.0-blue?logo=symfony)](https://symfony.com/)
+[![PHP](https://img.shields.io/badge/PHP-8.2-blueviolet?logo=php)](https://www.php.net/)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/yourusername/Neoblog)](https://github.com/yourusername/Neoblog/commits/main)
+[![Repo Size](https://img.shields.io/github/repo-size/yourusername/Neoblog)](https://github.com/yourusername/Neoblog)
+
+---
+
+## 📖 Description
+
+**Neoblog** is a simple and modern blog web application built with the Symfony PHP framework. Created as a school project, it demonstrates core web development concepts like CRUD operations, routing, authentication, and Twig templating in Symfony.
 
 ---
 
@@ -91,7 +101,47 @@ Access the project at http://127.0.0.1:8000
 
 ![Admin Panel Screenshot](screenshots/admin_panel.png)
 
+---
 
+## 📁 Project Structure
+
+```css
+    Neoblog/
+    ├── config/
+    ├── migrations/
+    ├── public/
+    ├── screenshots/
+    │ ├── homepage.png
+    │ ├── article-index.png
+    │ ├── article-show.png
+    │ ├── user-profile.png
+    │ └── admin-panel.png
+    ├── src/
+    │ ├── Controller/
+    │ ├── Entity/
+    │ ├── Repository/
+    │ └── ...
+    ├── templates/
+    ├── var/
+    ├── vendor/
+    ├── .env
+    ├── composer.json
+    └── symfony.lock
+```
+ ---
+
+---
+
+## 👤 Author
+
+**Hex-Umbra**
+[GitHub](https://github.com/Hex-Umbra)
+
+---
+
+## ⭐️ Final Note
+
+This project was created as part of a web development school assignment using Symfony 7 and aims to demonstrate clean code architecture, good practice in project organization, and a functional blogging platform.
 
 
 

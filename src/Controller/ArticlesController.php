@@ -93,6 +93,13 @@ final class ArticlesController extends AbstractController
     #[Route("/action/{id?}", name: ".action")]
     public function action(Request $req, EntityManagerInterface $em, ?Articles $article): Response
     {
+        $user = $this->getUser();
+
+        if (!$user->isVerified()) {
+            $this->addFlash('error', 'You need to verify your email before creating or editing articles.');
+            return $this->redirectToRoute('app.articles');
+        }
+
         $actionType = "Modifier un Article";
         $tabTitle = "Modification";
 

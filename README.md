@@ -2,7 +2,6 @@
 
 [![Symfony](https://img.shields.io/badge/Symfony-7.0-blue?logo=symfony)](https://symfony.com/)
 [![PHP](https://img.shields.io/badge/PHP-8.2-blueviolet?logo=php)](https://www.php.net/)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![Last Commit](https://img.shields.io/github/last-commit/Hex-Umbra/Neoblog)](https://github.com/Hex-Umbra/Neoblog/commits/main)
 [![Repo Size](https://img.shields.io/github/repo-size/Hex-Umbra/Neoblog)](https://github.com/Hex-Umbra/Neoblog)
 
@@ -116,10 +115,10 @@ Access the project at http://127.0.0.1:8000
     ├── public/
     ├── screenshots/
     │ ├── homepage.png
-    │ ├── article-index.png
-    │ ├── article-show.png
-    │ ├── user-profile.png
-    │ └── admin-panel.png
+    │ ├── articles_index.png
+    │ ├── articles_show.png
+    │ ├── user_profile.png
+    │ └── admin_panel.png
     ├── src/
     │ ├── Controller/
     │ ├── Entity/
@@ -231,8 +230,6 @@ Comments are displayed in chronological order on the article show page.
 
 ---
 
----
-
 ## 👤 Author
 
 **Hex-Umbra**
@@ -278,7 +275,7 @@ This project was created as part of a web development school assignment using Sy
 5. [x] - Making the Database
 6. [x] - Making the migrations
 7. [x] - Migrate
-8. [ ] - Making the Crud for the controllers
+8. [x] - Making the Crud for the controllers
     1. [ ] - For `ArticlesController`
        1. [x] - An `index` method with all articles
        2. [x] - A `new` method to create a new article
@@ -287,17 +284,13 @@ This project was created as part of a web development school assignment using Sy
        5. [x] - A `delete` method to delete an article
        6. [x] - Fuse Both `Edit` & `New` methods in one
        7. [x] - Eventually add a Pagination with 10 articles max per page
-       8. [ ] - 
     2. [ ] - For `User`
       1.  [x] - For `User Registration` use a mailer system to confirm the email
       2.  [x] - For `User Login` with the mailer system make a a forgot password system
-      3.  [ ] - Add Flash Message for `Registration`
-      4.  [ ] - Add Flash Message for `Email Validation`
-      5.  [ ] - Add Flash Message for `Email Password Reset`
-      6.  [ ] - Add Flash Message for `Successful Password Reset`
-      7.  [ ] - Add Flash Message for `Login`
-      8.  [ ] - Add Flash Message for `Logout`
-      9.  [ ] - Make a `User Profile`
+      3.  [x] - Add Flash Message for `Registration`
+      4.  [x] - Add Flash Message for `Email Password Reset`
+      5.  [x] - Add Flash Message for `Successful Password Reset`
+      6.  [ ] - Make a `User Profile`
           1.  [x] - Display all written articles
           2.  [ ] - Change the style to make it appealing
           3.  [ ] - Display all written comments and their related articles
@@ -317,7 +310,7 @@ This project was created as part of a web development school assignment using Sy
       2. [x] - A section about the most recent articles (4 max)
 14. [ ] - For `Login` & `Registration`, add redirection links to each other
 15. [x] - After adding email Confirmation, Add the `Forgot Password` feature
-16. [ ] - Handle `Page Errors` Templates
+16. [x] - Handle `Page Errors` Templates
     1.  [x] - 404
     2.  [x] - 403
     3.  [x] - 500

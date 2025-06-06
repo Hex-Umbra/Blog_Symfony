@@ -20,6 +20,18 @@
 
 <div x-data="{ openTagModal: false }" x-cloak>
 
+  <div>
+    {% for type,messages in app.flashes %}
+    {% for message in messages %}
+    <div class="bg-{{type}} text-white text-center my-5 py-2 px-3 rounded w-full">
+      {{message}}
+      <button class="btn btn-warning btn-circle asbolute top-2 right-2 ml-5"
+        onclick="this.parentElement.style.display='none'">X</button>
+    </div>
+
+    {% endfor %}
+    {% endfor %}
+  </div>
 
   <nav class="flex items-center justify-center gap-10" data-aos="zoom-in">
     <div
@@ -54,8 +66,12 @@
 
   <div role="list" class="flex flex-wrap justify-center gap-7 md:gap-5">
     {% for article in articles %}
-    <article onclick="window.location.href='{{ path('app.articles.show', {id: article.id}) }}'" role="listitem"
-      class="card bg-[#d9d9d933] rounded-xl w-[20rem] flex flex-col overflow-hidden cursor-pointer hover:outline-4 hover:outline-[#00D3BB]" data-aos="fade" data-aos-duration="1000" >
+    <article x-data="{ isHovered: false }" @mouseenter="isHovered = true" @mouseleave="isHovered = false"
+      @click="window.location.href='{{ path('app.articles.show', {id: article.id}) }}'" 
+      role="listitem"
+      :class="isHovered ? 'shadow-xl shadow-[#00D3BB] scale-[1.02]' : ''"
+      class="card bg-[#d9d9d933] rounded-xl w-[20rem] flex flex-col overflow-hidden cursor-pointer transition-all duration-300 ease-in-out transform"
+      data-aos="fade" data-aos-duration="1000">
 
       {# Image of the Article Card #}
       <figure class="w-full h-[180px] object-cover border-b-2 border-cyan-400 rounded-t-xl overflow-hidden">

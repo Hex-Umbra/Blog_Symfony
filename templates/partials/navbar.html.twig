@@ -11,17 +11,27 @@
                 </svg>
             </div>
             <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                <li><a href="{{path('app.login')}}"
-                        class="text-gray-400 btn btn-ghost btn-accent hover:text-black">Login</a>
-                </li>
                 <li><a href="{{path('app.articles')}}"
                         class="text-gray-400 btn btn-ghost btn-accent hover:text-black">Articles</a>
                 </li>
                 <li> <a href="{{path('app.about')}}"
                         class="text-gray-400 btn btn-ghost btn-accent hover:text-black">About</a>
                 </li>
+
                 {% if app.user %}
-                <li><a href="{{path('app.articles.action')}}">Write New Article</a></li>
+                <li><a href="{{path('app.articles.action')}}"
+                        class="text-gray-400 btn btn-ghost btn-accent hover:text-black">Write New Article</a></li>
+                <li><a href="{{path('app.profile',  {id:app.user.id})}}"
+                        class="text-gray-400 btn btn-ghost btn-accent hover:text-black">Profile</a></li>
+                <li><a href="{{path('app.logout')}}"
+                        class="text-red-400 btn btn-ghost btn-accent hover:text-black">Logout</a></li>
+                {% else %}
+                <li><a href="{{path('app.login')}}"
+                        class="text-gray-400 btn btn-ghost btn-accent hover:text-black">Login</a>
+                </li>
+                <li><a href="{{path('app.register')}}"
+                        class="text-gray-400 btn btn-ghost btn-accent hover:text-black">Registration</a>
+                </li>
                 {% endif %}
             </ul>
         </div>
@@ -41,14 +51,14 @@
     <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal px-2 gap-4">
             {# Link to Home Page #}
-            <li class="t{% if app.request.get(" _route") != "app.home" %} transition-transform duration-300
+            <li class="t{% if app.request.get(" _route") !="app.home" %} transition-transform duration-300
                 hover:scale-110 {% endif %}">
 
                 <a href="{{path('app.home')}}"
                     class='{% if app.request.get("_route") == "app.home" %} btn btn-accent text-black btn-lg{% else %} btn btn-ghost btn-accent text-gray-400 hover:text-black{% endif %}'>Home</a>
             </li>
             {# Link to all Articles #}
-            <li class="t{% if app.request.get(" _route") != "app.articles" %} transition-transform duration-300
+            <li class="t{% if app.request.get(" _route") !="app.articles" %} transition-transform duration-300
                 hover:scale-110 {% endif %}">
 
                 <a href="{{path('app.articles')}}"
@@ -56,7 +66,7 @@
             </li>
 
             {# Link to About Page #}
-            <li class="{% if app.request.get(" _route") != "app.about" %} transition-transform duration-300
+            <li class="{% if app.request.get(" _route") !="app.about" %} transition-transform duration-300
                 hover:scale-110 {% endif %}">
 
                 <a href="{{path('app.about')}}"

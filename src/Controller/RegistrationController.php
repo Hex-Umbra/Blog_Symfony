@@ -66,6 +66,7 @@ class RegistrationController extends AbstractController
                 "Email Validation",
                 $body
             );
+            $this->addFlash("success", "Registration successful. Please check your email to confirm your account.");
             return $this->redirectToRoute('app.login');
         }
 

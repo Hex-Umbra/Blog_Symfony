@@ -6,20 +6,29 @@
 
 
 <div class="relative flex flex-col items-center justify-center overflow-hidden text-black h-[calc(100vh-140px)]">
-    <div class="w-full p-6 bg-white border-t-4 border-gray-600 rounded-md shadow-md border-top lg:max-w-lg">
-        <h1 class="text-3xl font-semibold text-center text-gray-700">
+    <div class="bg-[#d9d9d933] rounded-xl w-[520px] max-w-full p-10 text-center shadow-lg shadow-[#00D3BB]">
+        <h1 class="text-4xl font-bold text-white mb-5">
             Registration
         </h1>
         {{ form_errors(registrationForm) }}
 
         {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-        label: 'Password'
-        }) }}
+        <div class="text-left">
 
-        <button type="submit" class="btn">Register</button>
+            {{ form_row(registrationForm.email) }}
+        </div>
+        <div class="text-left">
+
+            {{ form_row(registrationForm.plainPassword, {
+            label: 'Password'
+            }) }}
+        </div>
+
+        <button type="submit" class="btn btn-lg btn-accent my-4">Register</button>
         {{ form_end(registrationForm) }}
+        <div class="text-accent text-lg font-bold hover:text-[#5100D3] transition duration-100 mt-2">
+            <a href="{{path('app.login')}}" class="">Already registered ? Login and browse now !</a>
+        </div>
     </div>
 </div>
 {% endblock %}

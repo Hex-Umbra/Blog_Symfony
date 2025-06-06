@@ -20,7 +20,7 @@ class RegistrationForm extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'label' => "Email",
-                'attr' => ["class" => "w-full input input-bordered mb-3"],
+                'attr' => ["class" => "w-full input input-bordered mb-3 p-6 bg-gray-500 text-white text-xl"],
                 'label_attr' => [
                     'class' => 'text-gray-500 mb-2 block font-semibold',
                 ],
@@ -31,7 +31,7 @@ class RegistrationForm extends AbstractType
                 'mapped' => false,
                 'attr' => [
                     'autocomplete' => 'new-password',
-                    "class" => "w-full input input-bordered mb-3"
+                    "class" => "w-full input input-bordered mb-3 p-6 bg-gray-500 text-white text-xl"
                 ],
                 'label_attr' => [
                     'class' => 'text-gray-500 mb-2 block font-semibold',

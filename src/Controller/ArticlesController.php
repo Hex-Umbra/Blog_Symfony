@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Articles;
+use App\Entity\Comments;
 use App\Form\ArticleTypeForm;
+use App\Form\CommentsForm;
 use App\Repository\ArticlesRepository;
 use App\Repository\CategoriesRepository;
 use App\Repository\TagsRepository;
@@ -153,14 +155,45 @@ final class ArticlesController extends AbstractController
     }
 
     #[Route("/{id}", name: ".show")]
-    public function show(?Articles $article): Response
+    public function show(?Articles $article, Request $req, EntityManagerInterface $em): Response
     {
         if (!$article) {
             throw $this->createNotFoundException("Article not found");
         }
+        $user = $this->getUser();
+        $form = null;
+
+        if ($user) {
+
+            // Setting up the comment
+            $comment = new Comments();
+            $comment->setArticles($article);
+            $comment->setCreatedAt(new \DateTimeImmutable());
+            $comment->setUser($user);
+
+            $form = $this->createForm(CommentsForm::class, $comment);
+            $form->handleRequest($req);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em->persist($comment);
+                $em->flush();
+
+                $this->addFlash('success', 'Your comment has been added!');
+
+                // Use the same parameter name as the route definition
+                return $this->redirectToRoute('app.articles.show', [
+                    'id' => $article->getId() // or whatever parameter name your route uses
+                ]);
+            }
+        }
+
+        // Get comments (you might want to order them)
+        $comments = $article->getComments();
 
         return $this->render("/articles/show.html.twig", [
             'article' => $article,
+            'comments' => $comments,
+            'form' => $form?->createView(), // Using null-safe operator (PHP 8.0+)
         ]);
     }
 }

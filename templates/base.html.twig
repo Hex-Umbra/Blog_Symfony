@@ -70,6 +70,11 @@
       width: 100%;
       background: linear-gradient(to bottom, #364153, #ffffff44);
     }
+
+    /* Hide elements with x-cloak until Alpine.js loads */
+    [x-cloak] {
+      display: none !important;
+    }
   </style>
   {% block javascripts %}
 

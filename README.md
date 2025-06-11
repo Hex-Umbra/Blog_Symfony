@@ -80,22 +80,20 @@ Access the project at http://127.0.0.1:8000
 
 ### 📄 Article Index Page
 
-**Working on it**
-![Articles Index Screenshot](screenshots/articles_index.png)
+<img src="screenshots/articles_index.png" alt="Article Index Screenshot" width="1000"/>
 
 ---
 
 ### 📃 Article Show Page
 
-**Working on it**
-![Article Show Screenshot](screenshots/article_show.png)
+<img src="screenshots/article_show_1.png" alt="Article Show Screenshot" width="1000"/>
+<img src="screenshots/article_show_2.png" alt="Article Show Screenshot 2" width="1000"/>
 
 ---
 
 ### 👤 User Profile
 
-**Working on it**
-![User Profile Screenshot](screenshots/user_profile.png)
+<img src="screenshots/user_profile.png" alt="User Profile Screenshot" width="1000"/>
 
 ---
 
@@ -114,11 +112,6 @@ Access the project at http://127.0.0.1:8000
     ├── migrations/
     ├── public/
     ├── screenshots/
-    │ ├── homepage.png
-    │ ├── articles_index.png
-    │ ├── articles_show.png
-    │ ├── user_profile.png
-    │ └── admin_panel.png
     ├── src/
     │ ├── Controller/
     │ ├── Entity/

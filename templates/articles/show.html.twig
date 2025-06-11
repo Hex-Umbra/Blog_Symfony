@@ -6,6 +6,32 @@
 
 {% block body %}
 
+<style>
+  .join {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: gray;
+    padding: 1em;
+  }
+
+  @keyframes highlightEffect {
+    0% {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+      background-size: 200% 100%;
+      background-position: -100% 0;
+    }
+
+    100% {
+      background-position: 100% 0;
+    }
+  }
+
+  .highlight {
+    animation: highlightEffect 1.2s ease-in;
+  }
+</style>
+
 <section class="relative w-full overflow-hidden flex items-center justify-center text-white mb-10"
   style="min-height: 75vh;" data-aos="fade" data-aos-duration="500">
 
@@ -51,28 +77,46 @@
 
 <section class="mt-10 text-white px-6" x-data="{ open: false }" x-cloak>
 
-  <div class="flex justify-between items-center mb-4 border-b border-gray-600 pb-2">
+  <div id="comments" class="flex justify-between items-center mb-4 border-b border-gray-600 pb-2">
     <h2 class="text-3xl font-bold">Comments</h2>
     <div class="flex items-center gap-4">
       {% if app.user %}
       <button @click="open = true"
-        class="bg-[#00D3BB] text-black font-semibold px-3 py-1 rounded-full text-sm hover:scale-105 transition duration-200">
+        class="bg-[#00D3BB] text-black font-semibold px-3 py-1 rounded-lg text-md hover:scale-105 cursor-pointer transition duration-200">
         Leave a comment
       </button>
       {% endif %}
       <span class="text-xl font-bold">{{ comments|length }} Comment{{ comments|length == 1 ? '' : 's' }}</span>
     </div>
   </div>
+  <div>
+    {% for type,messages in app.flashes %}
+    {% for message in messages %}
+    <div class="bg-{{type}} text-white text-center my-5 py-2 px-3 rounded w-full">
+      {{message}}
+      <button class="btn btn-warning btn-circle asbolute top-2 right-2 ml-5"
+        onclick="this.parentElement.style.display='none'">X</button>
+    </div>
 
+    {% endfor %}
+    {% endfor %}
+  </div>
   {% for comment in comments %}
-  <div class="mb-6 border-b border-gray-700 pb-4">
+  <div class="mb-6 border-b border-gray-700 pb-4 {{ app.request.get('highlight') == comment.id ? 'highlight' : '' }}">
     <h3 class="text-xl font-semibold mb-1">Comment n°{{ loop.index }}</h3>
     <p class="text-gray-300 leading-relaxed mb-2">"{{ comment.text }}"</p>
-    {# <p class="text-right text-sm text-gray-400">– {{ comment.user }}</p> #}
+    <p class="text-sm text-gray-400">– {{ comment.user.email }}</p>
+    <time class="text-xs font-semibold text-gray-400 uppercase tracking-wide flex-shrink-0 sm:w-20"
+      datetime="{{ comment.createdAt|date('Y-m-d') }}">
+      {{ comment.createdAt|date('d M y') }}
+    </time>
   </div>
   {% else %}
   <p class="text-gray-500">No comments yet. Be the first to comment!</p>
   {% endfor %}
+  <div class="join">
+    {{ knp_pagination_render(comments) }}
+  </div>
 
   {# Modal Form — AlpineJS toggled #}
   <div x-show="open" class="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4"
@@ -108,4 +152,15 @@
   </div>
 </section>
 
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const url = new URL(window.location);
+    if (url.searchParams.has('highlight')) {
+      setTimeout(() => {
+        url.searchParams.delete('highlight');
+        window.history.replaceState({}, document.title, url.pathname + url.hash);
+      }, 3000); // after 3 seconds
+    }
+  });
+</script>
 {% endblock body %}

@@ -8,6 +8,7 @@ use App\Form\ArticleTypeForm;
 use App\Form\CommentsForm;
 use App\Repository\ArticlesRepository;
 use App\Repository\CategoriesRepository;
+use App\Repository\CommentsRepository;
 use App\Repository\TagsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -155,7 +156,7 @@ final class ArticlesController extends AbstractController
     }
 
     #[Route("/{id}", name: ".show")]
-    public function show(?Articles $article, Request $req, EntityManagerInterface $em): Response
+    public function show(?Articles $article, Request $req, EntityManagerInterface $em, CommentsRepository $commentsRepo, PaginatorInterface $paginator): Response
     {
         if (!$article) {
             throw $this->createNotFoundException("Article not found");
@@ -181,18 +182,28 @@ final class ArticlesController extends AbstractController
                 $this->addFlash('success', 'Your comment has been added!');
 
                 // Use the same parameter name as the route definition
-                return $this->redirectToRoute('app.articles.show', [
-                    'id' => $article->getId() // or whatever parameter name your route uses
-                ]);
+                return $this->redirect($this->generateUrl('app.articles.show', [
+                    'id' => $article->getId(),
+                    'highlight' => $comment->getId()
+                ]) . '#comments');
             }
         }
 
-        // Get comments (you might want to order them)
-        $comments = $article->getComments();
+        $query = $commentsRepo->createQueryBuilder('c')
+            ->where('c.articles = :article')
+            ->setParameter('article', $article)
+            ->orderBy('c.createdAt', 'DESC')
+            ->getQuery();
+
+        $pagination = $paginator->paginate(
+            $query,
+            $req->query->getInt('page', 1),
+            10 // comments per page
+        );
 
         return $this->render("/articles/show.html.twig", [
             'article' => $article,
-            'comments' => $comments,
+            'comments' => $pagination,
             'form' => $form?->createView(), // Using null-safe operator (PHP 8.0+)
         ]);
     }

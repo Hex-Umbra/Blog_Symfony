@@ -89,7 +89,7 @@ final class ArticlesController extends AbstractController
         $em->remove($article);
         $em->flush();
 
-        return $this->redirectToRoute("app.profile", ["id" => $this->getUser()]);
+        return $this->redirectToRoute("app.profile", ["id" => $this->getUser()->getId()]);
     }
 
     #[IsGranted("ROLE_USER")]

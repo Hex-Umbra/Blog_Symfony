@@ -143,8 +143,8 @@ This section describes the internal structure and logic of **Neoblog**, includin
 Routes are primarily defined using PHP attributes in the `src/Controller/` directory.
 
 **Available Controllers:**
-- `ArticleController` → Manages article listing, details, and creation.
-- `CommentController` → Manages article comments.
+- `HomeController` → Manages the home page and its features.
+- `ArticleController` → Manages article listing, details, and creation as well as Comments.
 - `AboutController` → Displays static about page.
 - `EmailConfirmationController` → Handles email verification links.
 - `RegistrationController` → Manages user registration.

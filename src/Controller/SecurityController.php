@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\ForgotPasswordForm;
 use App\Form\ResetPasswordForm;
 use App\Repository\ArticlesRepository;
+use App\Repository\CommentsRepository;
 use App\Repository\UserRepository;
 use App\Service\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -155,13 +156,15 @@ class SecurityController extends AbstractController
 
     #[IsGranted("ROLE_USER")]
     #[Route(path: "/{id}/profile", name: "app.profile")]
-    public function profile(ArticlesRepository $articlesRepo): Response
+    public function profile(ArticlesRepository $articlesRepo, CommentsRepository $commentsRepo): Response
     {
         $user = $this->getUser();
         $writtenArticles = $articlesRepo->findBy(["user" => $user]);
+        $comments = $commentsRepo->findBy(["user" => $user], ["createdAt" => "DESC"]);
 
         return $this->render("user/profile.html.twig", [
-            "articles" => $writtenArticles
+            "articles" => $writtenArticles,
+            "comments" => $comments
         ]);
     }
 }

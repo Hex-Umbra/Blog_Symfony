@@ -27,8 +27,8 @@ class ArticlesCrudController extends AbstractCrudController
             ImageField::new("image")
                 ->setBasePath("uploads")
                 ->setUploadDir("public/uploads"),
-            DateField::new("createdAt"),
-            DateField::new("updatedAt"),
+            DateField::new("createdAt")->onlyOnIndex(),
+            DateField::new("updatedAt")->onlyOnIndex(),
             AssociationField::new("user")->setFormTypeOption("choice_label", "email"),
             AssociationField::new("category")->setFormTypeOption("choice_label", "name"),
             AssociationField::new("tags")->setFormTypeOption("choice_label", "name"),

@@ -60,7 +60,7 @@ class Articles
         $this->comments = new ArrayCollection();
         $this->tags = new ArrayCollection();
     }
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -144,7 +144,7 @@ class Articles
     public function getComments(): Collection
     {
         $criteria = Criteria::create()->orderBy(['createdAt' => 'ASC']);
-    return $this->comments->matching($criteria);
+        return $this->comments->matching($criteria);
     }
 
     public function addComment(Comments $comment): static
@@ -217,4 +217,8 @@ class Articles
         return $this;
     }
 
+    public function __toString(): string
+    {
+        return $this->title;
+    }
 }

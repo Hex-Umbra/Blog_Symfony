@@ -99,8 +99,9 @@ Access the project at http://127.0.0.1:8000
 
 ### 🛠️ Admin Panel
 
-**Working on it**
-![Admin Panel Screenshot](screenshots/admin_panel.png)
+<img src="screenshots/admin_articles.png" alt="Admin Articles Screenshot" width="1000"/>
+<img src="screenshots/admin_comments.png" alt="Admin Comments Screenshot" width="1000"/>
+<img src="screenshots/admin_users.png" alt="Admin Users Screenshot" width="1000"/>
 
 ---
 

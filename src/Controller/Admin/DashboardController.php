@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Articles;
+use App\Entity\Comments;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -49,6 +51,8 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud("Articles", "fa fa-newspaper", Articles::class);
+        yield MenuItem::linkToCrud('Comments', 'fas fa-comments', Comments::class);
+        yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
 }
